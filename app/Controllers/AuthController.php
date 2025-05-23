@@ -31,6 +31,7 @@ class AuthController
             if (empty($username) || empty($email) || empty($password)) {
                 $response = ['success' => false, 'message' => 'Vui lòng điền đầy đủ các trường!'];
             } elseif ($this->userModel->registerUser($username, $email, $password, $is_active)) {
+
                 $response = ['success' => true, 'message' => 'Đăng ký thành công!', 'redirect' => '/login'];
             } else {
                 $response = ['success' => false, 'message' => 'Đăng ký thất bại! Email hoặc tên người dùng đã tồn tại.'];

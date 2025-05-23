@@ -45,13 +45,14 @@ $router->get('/products/create', [ProductController::class, 'create']);
 $router->post('/products/create', [ProductController::class, 'create']);
 $router->get('/products/edit/{id}', [ProductController::class, 'edit']);
 $router->post('/products/edit/{id}', [ProductController::class, 'edit']);
-$router->get('/products/delete/{id}', [ProductController::class, 'delete']);
+$router->post('/products/delete/{id}', [ProductController::class, 'delete']);
 $router->get('/products/{id}', [ProductController::class, 'show']);
 
 // === Yêu thích ===
 $router->get('/favorites', [FavoriteController::class, 'index']);
 $router->post('/favorites/add', [FavoriteController::class, 'add']);
 $router->post('/favorites/remove/{id}', [FavoriteController::class, 'remove']);
+
 // === Đánh giá ===
 $router->get('/reviews/create/{id}', [ReviewController::class, 'create']);
 $router->post('/reviews/create/{id}', [ReviewController::class, 'create']);
@@ -65,7 +66,6 @@ $router->post('/orders/cancel/{id}', [OrderController::class, 'cancel']);
 $router->get('/orders/track/{id}', [OrderController::class, 'track']);
 
 // === Quản lý đơn hàng nhà bán ===
-$router->get('/seller/orders', [OrderController::class, 'sellerOrders']);
 $router->get('/seller/orders/update/{id}', [OrderController::class, 'updateOrder']);
 $router->post('/seller/orders/update/{id}', [OrderController::class, 'updateOrder']);
 
@@ -77,7 +77,7 @@ $router->post('/sellers/rate/{id}', [SellerController::class, 'rate']);
 // === Thanh toán ===
 $router->get('/checkout', [CheckoutController::class, 'index']);
 $router->post('/checkout/process', [CheckoutController::class, 'process']);
-$router->get('/checkout/vnpay-callback', [CheckoutController::class, 'vnpayCallback']);
+$router->get('/checkout/callback', [CheckoutController::class, 'payosCallback']);
 $router->get('/order/confirmation/{id}', [CheckoutController::class, 'confirmation']);
 $router->get('/orders/pay/{id}', [CheckoutController::class, 'payOrder']);
 
@@ -98,7 +98,6 @@ $router->get('/admin/products', [AdminController::class, 'products']);
 $router->get('/admin/search-products', [AdminController::class, 'searchProducts']);
 $router->get('/admin/products/status/{id}/{status}', [AdminController::class, 'updateProductStatus']);
 $router->get('/admin/products/view/{id}', [AdminController::class, 'view_product']);
-
 
 // -- Quản lý danh mục sản phẩm --
 $router->get('/admin/categories', [AdminController::class, 'index']);

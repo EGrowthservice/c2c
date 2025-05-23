@@ -1,20 +1,26 @@
 <?php
+
 namespace App\Controllers;
+
 use App\Models\Order;
 use App\Helpers\Session;
-class OrderController {
+
+class OrderController
+{
     private $orderModel;
-    public function __construct() {
+    public function __construct()
+    {
         $this->orderModel = new Order();
     }
-    public function track($id) {
+    public function track($id)
+    {
         if (!Session::get('user')) {
             header('Location: /login');
             exit;
         }
-        
+
         $order = $this->orderModel->find($id);
-        
+
         if (!$order || $order['buyer_id'] != Session::get('user')['id']) {
             Session::set('error', 'Đơn hàng không tồn tại hoặc không thuộc về bạn!');
             header('Location: /orders');
@@ -22,7 +28,8 @@ class OrderController {
         }
         require_once __DIR__ . '/../Views/order/track.php';
     }
-    public function updateOrder($id) {
+    public function updateOrder($id)
+    {
         if (!Session::get('user')) {
             header('Location: /login');
             exit;
@@ -30,7 +37,7 @@ class OrderController {
         $order = $this->orderModel->find($id);
         if (!$order || $order['seller_id'] != Session::get('user')['id']) {
             Session::set('error', 'Đơn hàng không tồn tại hoặc không thuộc về bạn!');
-            header('Location: /seller/orders');
+            header('Location: /profile/orders');
             exit;
         }
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -42,12 +49,13 @@ class OrderController {
             } else {
                 Session::set('error', 'Cập nhật thất bại!');
             }
-            header('Location: /seller/orders');
+            header('Location: /profile/orders');
             exit;
         }
         require_once __DIR__ . '/../Views/order/update.php';
     }
-    public function cancel($id) {
+    public function cancel($id)
+    {
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['_token'] === Session::get('csrf_token')) {
             $order = $this->orderModel->getOrderById($id);
             if (!$order || $order['buyer_id'] !== Session::get('user')['id']) {

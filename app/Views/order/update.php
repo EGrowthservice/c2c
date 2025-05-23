@@ -1,4 +1,5 @@
 <?php include __DIR__ . '/../layouts/header.php'; ?>
+<?php include __DIR__ . '/../products/linkcss.php'; ?>
 <div class="container mt-5">
     <h2 class="mb-4">Cập nhật đơn hàng #<?= $order['id'] ?></h2>
     <?php if ($error = \App\Helpers\Session::get('error')): ?>
@@ -37,11 +38,22 @@
     </div>
 </div>
 <style>
-    .card { border-radius: 10px; }
-    .form-control { font-size: 0.9rem; }
+    .card {
+        border-radius: 10px;
+    }
+
+    .form-control {
+        font-size: 0.9rem;
+    }
+
     @media (max-width: 576px) {
-        .card-body { font-size: 0.9rem; }
-        .btn { padding: 0.25rem 0.5rem; }
+        .card-body {
+            font-size: 0.9rem;
+        }
+
+        .btn {
+            padding: 0.25rem 0.5rem;
+        }
     }
 </style>
 <?php include __DIR__ . '/../layouts/footer.php'; ?>

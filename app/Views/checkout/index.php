@@ -103,9 +103,9 @@ include __DIR__ . '/../layouts/header.php';
                         <p>Thanh toán bằng tiền mặt khi nhận hàng.</p>
                     </div>
                     <div class="form-check">
-                        <input type="radio" class="form-check-input" name="payment_method" value="vnpay" id="vnpay">
-                        <label class="form-check-label" for="vnpay">VNPay</label>
-                        <p>Thanh toán trực tuyến qua VNPay.</p>
+                        <input type="radio" class="form-check-input" name="payment_method" value="payos" id="payos">
+                        <label class="form-check-label" for="payos">PayOS</label>
+                        <p>Thanh toán trực tuyến qua PayOS.</p>
                     </div>
                 </div>
                 <p>Dữ liệu cá nhân của bạn sẽ được sử dụng để xử lý đơn hàng, hỗ trợ trải nghiệm trên website này, và các mục đích khác được mô tả trong chính sách bảo mật của chúng tôi.</p>
