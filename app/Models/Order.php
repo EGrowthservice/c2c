@@ -62,21 +62,24 @@ class Order
 
     public function getOrderById($id)
     {
-        $query = "SELECT * FROM orders WHERE id = ?";
+        $query = "SELECT o.*, p.payment_method 
+              FROM orders o 
+              LEFT JOIN payment p ON o.id = p.order_id 
+              WHERE o.id = ?";
         $stmt = $this->db->prepare($query);
         $stmt->execute([$id]);
-        return $stmt->fetch();
+        return $stmt->fetch(\PDO::FETCH_ASSOC);
     }
 
 
-    public function create($buyerId, $sellerId, $productId, $quantity, $totalPrice)
+    public function create($userId, $sellerId, $productId, $quantity, $totalPrice)
     {
         $stmt = $this->db->prepare("
-            INSERT INTO orders (buyer_id, seller_id, product_id, quantity, total_price, status)
-            VALUES (?, ?, ?, ?, ?, 'pending')
-        ");
-        $stmt->execute([$buyerId, $sellerId, $productId, $quantity, $totalPrice]);
-        return $this->db->lastInsertId();
+        INSERT INTO orders (buyer_id, seller_id, product_id, quantity, total_price, status, created_at)
+        VALUES (?, ?, ?, ?, ?, 'pending', NOW())
+    ");
+        $stmt->execute([$userId, $sellerId, $productId, $quantity, $totalPrice]);
+        return (int)$this->db->lastInsertId();
     }
 
     public function addDetail($orderId, $details)

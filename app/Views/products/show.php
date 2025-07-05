@@ -58,6 +58,10 @@ include __DIR__ . '/./linkcss.php';
                                     <button class="btn btn-outline-danger btn-md fw-semibold add-to-favorites" data-product-id="<?= $product['id'] ?>">
                                         <i class="bi bi-heart-fill me-1"></i> Yêu thích
                                     </button>
+                                    <a href="/chat/<?= $product['id'] ?>/<?= $product['user_id'] ?>" class="btn btn-info btn-md fw-semibold">
+                                        <i class="bi bi-chat
+-dots me-1"></i> Chat với người bán
+                                    </a>
                                     <a href="/reports/create/<?= $product['id'] ?>" class="btn btn-outline-secondary btn-md fw-semibold">
                                         <i class="bi bi-exclamation-circle me-1"></i> Báo cáo người bán
                                     </a>
@@ -73,7 +77,7 @@ include __DIR__ . '/./linkcss.php';
                 </div>
             </div>
 
-            <!-- Tabs for Description, Additional Info, Reviews -->
+            <!-- Tabs for Description, Additional Info, Reviews, and Chat -->
             <div class="mt-5">
                 <ul class="nav nav-tabs border-bottom-0" id="product-tabs" role="tablist">
                     <li class="nav-item" role="presentation">
@@ -209,7 +213,7 @@ include __DIR__ . '/../layouts/footer.php';
                             timer: 2000,
                             showConfirmButton: false
                         }).then(() => {
-                            window.location.href = '/cart'; // Chuyển hướng đến giỏ hàng
+                            window.location.href = '/cart';
                         });
                     } else {
                         Swal.fire({

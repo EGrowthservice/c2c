@@ -17,6 +17,7 @@
              <li><a href="/admin" class="account-nav__link">QUẢN LÝ - ADMIN</a></li>
          <?php endif; ?>
 
+         <li><a href="/conversations" class="account-nav__link">Tin nhắn</a></li>
          <li><a href="/profile/orders" class="account-nav__link">Đơn hàng</a></li>
          <li><a href="/profile/products" class="account-nav__link">Sản phẩm</a></li>
          <li><a href="/profile/my-orders" class="account-nav__link">Đơn hàng của tôi</a></li>

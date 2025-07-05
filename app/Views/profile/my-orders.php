@@ -90,6 +90,8 @@ include __DIR__ . '/../products/linkcss.php';
                                                 'processing' => 'primary',
                                                 'pending' => 'warning',
                                                 'cancelled' => 'danger',
+                                                'pending_payment' => 'danger',
+                                                'confirmed' => 'danger'
                                             };
                                             $statusText = match ($order['status']) {
                                                 'delivered' => 'Đã giao',
@@ -97,6 +99,8 @@ include __DIR__ . '/../products/linkcss.php';
                                                 'processing' => 'Đang xử lý',
                                                 'pending' => 'Chờ xử lý',
                                                 'cancelled' => 'Đã hủy',
+                                                'pending_payment' => 'Chờ thanh toán',
+                                                'confirmed' => 'Thanh toán thành công'
                                             };
                                             ?>
                                             <span class="badge bg-<?= $statusClass ?> badge-status" data-bs-toggle="tooltip" data-bs-placement="top" title="<?= htmlspecialchars($statusText) ?>">

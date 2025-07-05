@@ -15,7 +15,11 @@ c2c/
 ├── composer.json           # File quản lý thư viện
 └── README.md               # Hướng dẫn triển khai
 
-
+DB_HOST=localhost
+DB_NAME=c2c_marketplace
+DB_USER=root
+DB_PASS=
+APP_URL=http://localhost:8080
 
 # Gói cần thiết trước khi chạy website ( vendor )
 + Composer install
@@ -39,4 +43,7 @@ APP_URL=http://localhost:8080
 
 # Cấu hình database 
 # Config/Database.php
+
+# Cấu hình PayOS
+# Config/payos ( 3 mã payos cung cấp)
 

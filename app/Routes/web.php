@@ -7,6 +7,7 @@ use App\Controllers\FavoriteController;
 use App\Controllers\ReviewController;
 use App\Controllers\AdminController;
 use App\Controllers\CartController;
+use App\Controllers\ChatController;
 use App\Controllers\CheckoutController;
 use App\Controllers\ContactController;
 use App\Controllers\PaymentController;
@@ -31,6 +32,11 @@ $router->post('/reset-password', [AuthController::class, 'resetPassword']);
 $router->get('/profile', [AuthController::class, 'profile']);
 $router->get('/profile/change-password', [AuthController::class, 'changePassword']);
 $router->post('/profile/change-password', [AuthController::class, 'changePassword']);
+
+// === Trang chat với người dùng ===
+$router->get('/chat/{product_id}/{seller_id}', [ChatController::class, 'GetChat']);
+$router->post('/chat/save', [ChatController::class, 'save']);
+$router->get('/conversations', [ChatController::class, 'GetConversations']);
 
 // === Hồ sơ người dùng ===
 $router->get('/profile/orders', [ProfileController::class, 'orders']);
@@ -62,6 +68,7 @@ $router->get('/reports/create/{id}', [ReportController::class, 'create']);
 $router->post('/reports/create/{id}', [ReportController::class, 'create']);
 
 // === Đơn hàng ===
+$router->post('/orders/{id}', [OrderController::class, 'cancel']);
 $router->post('/orders/cancel/{id}', [OrderController::class, 'cancel']);
 $router->get('/orders/track/{id}', [OrderController::class, 'track']);
 
@@ -78,6 +85,8 @@ $router->post('/sellers/rate/{id}', [SellerController::class, 'rate']);
 $router->get('/checkout', [CheckoutController::class, 'index']);
 $router->post('/checkout/process', [CheckoutController::class, 'process']);
 $router->get('/checkout/callback', [CheckoutController::class, 'payosCallback']);
+$router->get('/checkout/success', [CheckoutController::class, 'success']);
+$router->get('/checkout/cancel', [CheckoutController::class, 'cancel']);
 $router->get('/order/confirmation/{id}', [CheckoutController::class, 'confirmation']);
 $router->get('/orders/pay/{id}', [CheckoutController::class, 'payOrder']);
 
