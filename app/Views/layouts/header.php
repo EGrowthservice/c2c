@@ -35,6 +35,9 @@ $userLink = Session::get('user') ? '/profile' : '/login';
 
 <body class="gradient-bg">
   <svg class="d-none">
+    <symbol id="icon_bell" viewBox="0 0 18 18">
+  <path d="M9 0C4.03 0 0 4.03 0 9s4.03 9 9 9 9-4.03 9-9-4.03-9-9-9zm0 16.5c-.83 0-1.5-.67-1.5-1.5h3c0 .83-.67 1.5-1.5 1.5zm3-4.5H6v-1.5l1-1v-3c0-1.65 1.35-3 3-3h1v-1h1.5v1h1c1.65 0 3 1.35 3 3v3l1 1v1.5z" fill="currentColor"/>
+</symbol>
     <symbol id="icon_nav" viewBox="0 0 25 18">
       <rect width="25" height="2" />
       <rect y="8" width="20" height="2" />
@@ -267,124 +270,68 @@ $userLink = Session::get('user') ? '/profile' : '/login';
       max-width: 220px;
     }
   </style>
-  <div class="header-mobile header_sticky">
-    <div class="container d-flex align-items-center h-100">
-      <a class="mobile-nav-activator d-block position-relative" href="#">
-        <svg class="nav-icon" width="25" height="18" viewBox="0 0 25 18" xmlns="http://www.w3.org/2000/svg">
-          <use href="#icon_nav" />
-        </svg>
-        <button class="btn-close-lg position-absolute top-0 start-0 w-100"></button>
+ <!-- Header mobile -->
+<div class="header-mobile header_sticky">
+  <div class="container d-flex align-items-center h-100">
+    <!-- ... Các phần khác ... -->
+    <a href="#" class="header-tools__item header-tools__cart js-open-aside" data-aside="cartDrawer">
+      <svg class="d-block" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <use href="#icon_cart" />
+      </svg>
+      <span class="cart-amount d-block position-absolute js-cart-items-count">3</span>
+    </a>
+    <div class="header-tool notify">
+      <a class="header-tool_icon notify-toggle" href="javascript:void(0)">
+        <svg class="icon"><use xlink:href="#icon_bell"></use></svg>
+        <span class="header-tool_count notify-count">0</span>
       </a>
-
-      <div class="logo">
-        <a href="/">
-          <img src="assets/images/logo.png" alt="Uomo" class="logo__image d-block" />
-        </a>
+      <div class="notify-popup">
+        <div class="notify-popup_header">
+          <h3>Thông báo</h3>
+          <a href="javascript:void(0)" class="notify-close"><svg class="icon"><use xlink:href="#icon_close"></use></svg></a>
+        </div>
+        <div class="notify-popup_body notify-list"></div>
       </div>
-
-      <a href="#" class="header-tools__item header-tools__cart js-open-aside" data-aside="cartDrawer">
-        <svg class="d-block" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <use href="#icon_cart" />
-        </svg>
-        <span class="cart-amount d-block position-absolute js-cart-items-count">3</span>
-      </a>
     </div>
-
-    <nav
-      class="header-mobile__navigation navigation d-flex flex-column w-100 position-absolute top-100 bg-body overflow-auto">
-      <div class="container">
-        <form action="#" method="GET" class="search-field position-relative mt-4 mb-3">
-          <div class="position-relative">
-            <input class="search-field__input w-100 border rounded-1" type="text" name="search-keyword"
-              placeholder="Search products" />
-            <button class="btn-icon search-popup__submit pb-0 me-2" type="submit">
-              <svg class="d-block" width="20" height="20" viewBox="0 0 20 20" fill="none"
-                xmlns="http://www.w3.org/2000/svg">
-                <use href="#icon_search" />
-              </svg>
-            </button>
-            <button class="btn-icon btn-close-lg search-popup__reset pb-0 me-2" type="reset"></button>
-          </div>
-
-          <div class="position-absolute start-0 top-100 m-0 w-100">
-            <div class="search-result"></div>
-          </div>
-        </form>
-      </div>
-
-      <div class="container">
-        <div class="overflow-hidden">
-          <ul class="navigation__list list-unstyled position-relative">
-            <li class="navigation__item">
-              <a href="/" class="navigation__link">Trang chủ</a>
-            </li>
-            <li class="navigation__item">
-              <a href="/product" class="navigation__link">Sản phẩm</a>
-            </li>
-            <li class="navigation__item">
-              <a href="/" class="navigation__link">Contact</a>
-            </li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="border-top mt-auto pb-2">
-        <div class="customer-links container mt-4 mb-2 pb-1">
-          <svg class="d-inline-block align-middle" width="20" height="20" viewBox="0 0 20 20" fill="none"
-            xmlns="http://www.w3.org/2000/svg">
-            <use href="#icon_user" />
-          </svg>
-          <span class="d-inline-block ms-2 text-uppercase align-middle fw-medium">My Account</span>
-        </div>
-
-
-
-        <ul class="container social-links list-unstyled d-flex flex-wrap mb-0">
-          <li>
-            <a href="#" class="footer__social-link d-block ps-0">
-              <svg class="svg-icon svg-icon_facebook" width="9" height="15" viewBox="0 0 9 15"
-                xmlns="http://www.w3.org/2000/svg">
-                <use href="#icon_facebook" />
-              </svg>
-            </a>
-          </li>
-          <li>
-            <a href="#" class="footer__social-link d-block">
-              <svg class="svg-icon svg-icon_twitter" width="14" height="13" viewBox="0 0 14 13"
-                xmlns="http://www.w3.org/2000/svg">
-                <use href="#icon_twitter" />
-              </svg>
-            </a>
-          </li>
-          <li>
-            <a href="#" class="footer__social-link d-block">
-              <svg class="svg-icon svg-icon_instagram" width="14" height="13" viewBox="0 0 14 13"
-                xmlns="http://www.w3.org/2000/svg">
-                <use href="#icon_instagram" />
-              </svg>
-            </a>
-          </li>
-          <li>
-            <a href="#" class="footer__social-link d-block">
-              <svg class="svg-icon svg-icon_youtube" width="16" height="11" viewBox="0 0 16 11"
-                xmlns="http://www.w3.org/2000/svg">
-                <path
-                  d="M15.0117 1.8584C14.8477 1.20215 14.3281 0.682617 13.6992 0.518555C12.5234 0.19043 7.875 0.19043 7.875 0.19043C7.875 0.19043 3.19922 0.19043 2.02344 0.518555C1.39453 0.682617 0.875 1.20215 0.710938 1.8584C0.382812 3.00684 0.382812 5.46777 0.382812 5.46777C0.382812 5.46777 0.382812 7.90137 0.710938 9.07715C0.875 9.7334 1.39453 10.2256 2.02344 10.3896C3.19922 10.6904 7.875 10.6904 7.875 10.6904C7.875 10.6904 12.5234 10.6904 13.6992 10.3896C14.3281 10.2256 14.8477 9.7334 15.0117 9.07715C15.3398 7.90137 15.3398 5.46777 15.3398 5.46777C15.3398 5.46777 15.3398 3.00684 15.0117 1.8584ZM6.34375 7.68262V3.25293L10.2266 5.46777L6.34375 7.68262Z" />
-              </svg>
-            </a>
-          </li>
-          <li>
-            <a href="#" class="footer__social-link d-block">
-              <svg class="svg-icon svg-icon_pinterest" width="14" height="15" viewBox="0 0 14 15"
-                xmlns="http://www.w3.org/2000/svg">
-                <use href="#icon_pinterest" />
-              </svg>
-            </a>
-          </li>
-        </ul>
-      </div>
-    </nav>
   </div>
+  <!-- ... Phần còn lại của header-mobile ... -->
+</div>
+
+<!-- Header desktop -->
+<header id="header" class="header header-fullwidth header-transparent-bg">
+  <div class="container">
+    <div class="header-desk header-desk_type_1">
+      <!-- ... Logo và navigation ... -->
+      <div class="header-tools d-flex align-items-center">
+        <!-- ... Tìm kiếm và user ... -->
+        <a href="favorites" class="header-tools__item">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <use href="#icon_heart" />
+          </svg>
+        </a>
+        <div class="header-tools__item notify">
+          <a class="header-tool_icon notify-toggle" href="javascript:void(0)">
+            <svg class="d-block" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <use href="#icon_bell" />
+            </svg>
+            <span class="header-tool_count notify-count">0</span>
+          </a>
+          <div class="notify-popup">
+            <div class="notify-popup_header">
+              <h3>Thông báo</h3>
+              <a href="javascript:void(0)" class="notify-close">
+                <svg class="d-block" width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <use href="#icon_close" />
+                </svg>
+              </a>
+            </div>
+            <div class="notify-popup_body notify-list"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
 
 
   <header id="header" class="header header-fullwidth header-transparent-bg">
@@ -459,14 +406,91 @@ $userLink = Session::get('user') ? '/profile' : '/login';
               <use href="#icon_heart" />
             </svg>
           </a>
-
-
+          <div class="header-tools__item notify">
+  <a class="header-tool_icon" href="javascript:void(0)" id="notify-toggle">
+    <svg class="d-block" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <use href="#icon_bell" />
+    </svg>
+    <span class="header-tool_count" id="notify-count">0</span>
+  </a>
+  <div class="notify-popup" id="notify-popup">
+    <div class="notify-popup_header">
+      <h3>Thông báo</h3>
+      <a href="javascript:void(0)" id="notify-close">
+        <svg class="d-block" width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <use href="#icon_close" />
+        </svg>
+      </a>
+    </div>
+    <div class="notify-popup_body" id="notify-list"></div>
+  </div>
+</div>
         </div>
       </div>
     </div>
   </header>
 
   <main>
+    <script>
+      // Danh sách thông báo mẫu
+const notifications = [
+  { id: 1, message: "Đơn hàng #123 đã được giao thành công!", read: false },
+  { id: 2, message: "Sản phẩm mới vừa được thêm vào cửa hàng.", read: true },
+  { id: 3, message: "Ưu đãi 20% cho đơn hàng tiếp theo!", read: false },
+];
+
+// Cập nhật số lượng thông báo chưa đọc
+function updateNotificationCount() {
+  const unreadCount = notifications.filter(n => !n.read).length;
+  const notifyCounts = document.querySelectorAll('#notify-count');
+  notifyCounts.forEach(count => {
+    count.textContent = unreadCount;
+  });
+}
+
+// Hiển thị danh sách thông báo
+function renderNotifications(popup) {
+  const notifyList = popup.querySelector('#notify-list');
+  notifyList.innerHTML = '';
+  notifications.forEach(notification => {
+    const notifyItem = document.createElement('div');
+    notifyItem.className = `notify-item ${notification.read ? '' : 'unread'}`;
+    notifyItem.innerHTML = `<p>${notification.message}</p>`;
+    notifyList.appendChild(notifyItem);
+  });
+}
+
+// Toggle popup thông báo
+document.querySelectorAll('#notify-toggle').forEach(toggle => {
+  toggle.addEventListener('click', (e) => {
+    e.preventDefault();
+    const popup = toggle.closest('.notify').querySelector('#notify-popup');
+    popup.classList.toggle('active');
+    if (popup.classList.contains('active')) {
+      renderNotifications(popup);
+    }
+  });
+});
+
+// Đóng popup khi nhấp vào nút đóng
+document.querySelectorAll('#notify-close').forEach(close => {
+  close.addEventListener('click', () => {
+    close.closest('#notify-popup').classList.remove('active');
+  });
+});
+
+// Đóng popup khi nhấp ra ngoài
+document.addEventListener('click', (e) => {
+  if (!e.target.closest('.notify') && !e.target.closest('#notify-popup')) {
+    document.querySelectorAll('#notify-popup').forEach(popup => {
+      popup.classList.remove('active');
+    });
+  }
+});
+
+// Khởi tạo
+updateNotificationCount();
+    </script>
     <script src="assets/js/plugins/jquery.min.js"></script>
     <script src="assets/js/plugins/bootstrap.bundle.min.js"></script>
     <script src="assets/js/plugins/bootstrap-slider.min.js"></script>

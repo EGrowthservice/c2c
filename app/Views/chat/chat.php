@@ -1,5 +1,4 @@
 <?php
-
 use App\Helpers\Session;
 use App\Models\Product;
 
@@ -9,8 +8,7 @@ $sellerId = $seller_id ?? null;   // Lấy từ tham số route
 $productModel = new Product();
 $product = $productModel->find($productId);
 $product_name = $product['title'] ?? 'Không rõ tên sản phẩm';
-include __DIR__ . '/../layouts/header.php';
-include __DIR__ . '/../products/linkcss.php';
+
 if (!$currentUserId || !$productId || !$sellerId) {
     Session::set('error', 'Vui lòng đăng nhập và kiểm tra thông tin!');
     header('Location: /login');
@@ -18,12 +16,137 @@ if (!$currentUserId || !$productId || !$sellerId) {
 }
 ?>
 
-<main class="pt-5">
-    <div class="container">
-        <div class="mb-5"></div>
-        <section class="chat-section">
-            <h4 class="fw-bold mb-3">Chat với người bán - Tên Sản phẩm: <?= htmlspecialchars($product_name) ?></h4>
-            <div id="chat-messages" class="mb-3" style="height: 400px; overflow-y: auto; border: 1px solid #ddd; padding: 10px; background-color: #f8f9fa;">
+    <title>Chat với người bán - <?= htmlspecialchars($product_name) ?></title>
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+   <style>
+ 
+
+    .chat-section {
+        max-width: 800px;
+        margin: auto;
+        padding: 1.5rem;
+        background-color: #fff;
+        border-radius: 15px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+    }
+
+    .chat-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 1rem;
+        border-bottom: 1px solid #e0e0e0;
+    }
+
+    .chat-header h4 {
+        margin: 0;
+        font-weight: 600;
+    }
+
+    #chat-messages {
+        height: 450px;
+        overflow-y: auto;
+        padding: 1rem;
+        background-color: #f9f9fb;
+        border-radius: 10px;
+        margin-bottom: 1rem;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .message {
+        max-width: 75%;
+        padding: 0.75rem 1rem;
+        margin: 0.4rem 0;
+        border-radius: 20px;
+        font-size: 0.95rem;
+        line-height: 1.4;
+        position: relative;
+        display: inline-block;
+        word-wrap: break-word;
+    }
+
+    .message small {
+        display: block;
+        margin-top: 5px;
+        font-size: 0.75rem;
+        color: black;
+    }
+
+    .message.user {
+        align-self: flex-end;
+        background-color: #007bff;
+        color: white;
+        border-bottom-right-radius: 4px;
+    }
+
+    .message.seller {
+        align-self: flex-start;
+        background-color: #e4e6eb;
+        color: #000;
+        border-bottom-left-radius: 4px;
+    }
+
+    .input-area {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    #chat-input {
+        flex: 1;
+        border-radius: 20px;
+        padding: 0.6rem 1rem;
+        border: 1px solid #ccc;
+    }
+
+    #send-message {
+        border-radius: 30%;
+        width: 45px;
+        height: 45px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #007bff;
+        color: white;
+        border: none;
+    }
+
+    #send-message i {
+        font-size: 18px;
+    }
+
+    @media (max-width: 576px) {
+        .chat-section {
+            padding: 1rem;
+            border-radius: 0;
+        }
+
+        #chat-messages {
+            height: 350px;
+        }
+
+        .message {
+            max-width: 85%;
+        }
+
+        #send-message {
+            width: 40px;
+            height: 40px;
+        }
+    }
+</style>
+
+</head>
+    <?php include __DIR__ . '/../layouts/header.php'; ?>
+    <?php include __DIR__ . '/../products/linkcss.php'; ?>
+
+    <main class="pt-5">
+        <div class="container chat-section">
+            <div class="chat-header">
+                <h4 class="fw-bold mb-0">Chat với người bán - <span class="fst-italic"><?= htmlspecialchars($product_name) ?></span></h4>
+            </div>
+            <div id="chat-messages" class="mb-3">
                 <?php
                 $chatModel = new \App\Models\ChatModel();
                 $chatHistory = $chatModel->getChats($productId, $currentUserId, $sellerId);
@@ -31,158 +154,111 @@ if (!$currentUserId || !$productId || !$sellerId) {
                     $isSender = $msg['sender_id'] == $currentUserId;
                     $senderLabel = $isSender ? 'Bạn' : 'Người bán';
                     $class = $isSender ? 'user' : 'seller';
-
-                    echo '<div class="message ' . $class . '">';
-                    echo '<strong>' . $senderLabel . ':</strong> ' . htmlspecialchars($msg['message']);
-                    echo '<small>' . $msg['created_at'] . '</small>';
-                    echo '</div>';
+                    ?>
+                    <div class="message <?php echo $class; ?>">
+                        <strong><?php echo $senderLabel; ?>:</strong> <?php echo htmlspecialchars($msg['message']); ?>
+                        <small><?php echo $msg['created_at']; ?></small>
+                    </div>
+                    <?php
                 }
                 ?>
             </div>
             <div class="input-group">
                 <input type="text" id="chat-input" class="form-control" placeholder="Nhập tin nhắn...">
-                <button class="btn btn-primary" id="send-message">Gửi</button>
+                <button class="btn btn-primary" id="send-message">
+                    <i class="fas fa-paper-plane me-1"></i> Gửi
+                </button>
             </div>
-        </section>
-    </div>
-</main>
-<style>
-    .chat-section {
-        max-width: 800px;
-        margin: 0 auto;
-    }
+        </div>
+    </main>
 
-    #chat-messages {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-    }
+    <?php include __DIR__ . '/../layouts/footer.php'; ?>
 
-    .message {
-        max-width: 70%;
-        padding: 10px 14px;
-        border-radius: 20px;
-        position: relative;
-        word-wrap: break-word;
-        display: inline-block;
-        font-size: 14px;
-        line-height: 1.4;
-    }
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            const productId = <?php echo json_encode($productId); ?>;
+            const userId = <?php echo json_encode($currentUserId); ?>;
+            const sellerId = <?php echo json_encode($sellerId); ?>;
+            let ws = new WebSocket('ws://localhost:9000?user_id=' + userId + '&product_id=' + productId + '&seller_id=' + sellerId);
 
-    .message small {
-        display: block;
-        font-size: 11px;
-        margin-top: 5px;
-        color: #666;
-    }
+            // Function to scroll to the bottom of the chat
+            function scrollToBottom() {
+                const chatMessages = $('#chat-messages');
+                chatMessages.scrollTop(chatMessages[0].scrollHeight);
+            }
 
-    .message.user {
-        align-self: flex-end;
-        background-color: rgb(141, 150, 163);
-        color: #fff;
-        border-bottom-right-radius: 0;
-    }
-
-    .message.seller {
-        align-self: flex-start;
-        background-color: #f1f0f0;
-        color: #000;
-        border-bottom-left-radius: 0;
-    }
-</style>
-
-<?php
-include __DIR__ . '/../layouts/footer.php';
-?>
-
-<script src="/assets/js/plugins/jquery.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-    $(document).ready(function() {
-        const productId = <?= json_encode($productId) ?>;
-        const userId = <?= json_encode($currentUserId) ?>;
-        const sellerId = <?= json_encode($sellerId) ?>;
-        let ws = new WebSocket('ws://localhost:9000?user_id=' + userId + '&product_id=' + productId + '&seller_id=' + sellerId);
-
-        // Function to scroll to the bottom of the chat
-        function scrollToBottom() {
-            const chatMessages = $('#chat-messages');
-            chatMessages.scrollTop(chatMessages[0].scrollHeight);
-        }
-
-        // Scroll to bottom on page load to show the latest message
-        scrollToBottom();
-
-        ws.onopen = function() {
-            console.log('WebSocket connection established at <?= date('h:i A T, l, F d, Y') ?>'); // 11:43 PM +07, Saturday, July 05, 2025
-        };
-
-        ws.onmessage = function(event) {
-            const data = JSON.parse(event.data);
-            $('#chat-messages').append(
-                '<div class="message ' + (data.user_id == userId ? 'user' : 'seller') + '">' +
-                '<strong>' + (data.user_id == userId ? 'Bạn' : 'Người bán') + ':</strong> ' +
-                data.message +
-                '<small>' + data.timestamp + '</small>' +
-                '</div>'
-            );
+            // Scroll to bottom on page load to show the latest message
             scrollToBottom();
-        };
 
-        ws.onclose = function() {
-            console.log('WebSocket connection closed');
-        };
+            ws.onopen = function() {
+                console.log('WebSocket connection established at <?php echo date('h:i A T, l, F d, Y'); ?>');
+            };
 
-        ws.onerror = function(error) {
-            console.error('WebSocket error:', error);
-        };
+            ws.onmessage = function(event) {
+                const data = JSON.parse(event.data);
+                $('#chat-messages').append(
+                    `<div class="message ${data.user_id == userId ? 'user' : 'seller'}">
+                        <strong>${data.user_id == userId ? 'Bạn' : 'Người bán'}:</strong> ${data.message}
+                        <small>${data.timestamp}</small>
+                    </div>`
+                );
+                scrollToBottom();
+            };
 
-        $('#send-message').on('click', function() {
-            const message = $('#chat-input').val().trim();
-            if (message && ws.readyState === WebSocket.OPEN) {
-                $.ajax({
-                    url: '/chat/save',
-                    method: 'POST',
-                    data: {
-                        sender_id: userId,
-                        receiver_id: sellerId,
-                        product_id: productId,
-                        message: message
-                    },
-                    success: function(response) {
-                        if (response.success) {
-                            // Thêm tin nhắn vào giao diện ngay lập tức
-                            $('#chat-messages').append(
-                                '<div class="message user">' +
-                                '<strong>Bạn:</strong> ' + message +
-                                '<small>' + response.timestamp + '</small>' +
-                                '</div>'
-                            );
-                            scrollToBottom();
-                            // Gửi tin nhắn qua WebSocket cho người nhận
-                            ws.send(JSON.stringify({
-                                message: message,
-                                user_id: userId,
-                                timestamp: response.timestamp,
-                                target_user_id: sellerId
-                            }));
-                            $('#chat-input').val('');
-                        } else {
-                            alert('Gửi tin nhắn thất bại: ' + (response.message || 'Lỗi không xác định'));
+            ws.onclose = function() {
+                console.log('WebSocket connection closed');
+            };
+
+            ws.onerror = function(error) {
+                console.error('WebSocket error:', error);
+            };
+
+            $('#send-message').on('click', function() {
+                const message = $('#chat-input').val().trim();
+                if (message && ws.readyState === WebSocket.OPEN) {
+                    $.ajax({
+                        url: '/chat/save',
+                        method: 'POST',
+                        data: {
+                            sender_id: userId,
+                            receiver_id: sellerId,
+                            product_id: productId,
+                            message: message
+                        },
+                        success: function(response) {
+                            if (response.success) {
+                                $('#chat-messages').append(
+                                    `<div class="message user">
+                                        <strong>Bạn:</strong> ${message}
+                                        <small>${response.timestamp}</small>
+                                    </div>`
+                                );
+                                scrollToBottom();
+                                ws.send(JSON.stringify({
+                                    message: message,
+                                    user_id: userId,
+                                    timestamp: response.timestamp,
+                                    target_user_id: sellerId
+                                }));
+                                $('#chat-input').val('');
+                            } else {
+                                alert('Gửi tin nhắn thất bại: ' + (response.message || 'Lỗi không xác định'));
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            console.error('AJAX error:', xhr.responseText, status, error);
+                            alert('Lỗi kết nối server');
                         }
-                    },
-                    error: function(xhr, status, error) {
-                        console.error('AJAX error:', xhr.responseText, status, error);
-                        alert('Lỗi kết nối server');
-                    }
-                });
-            }
-        });
+                    });
+                }
+            });
 
-        $('#chat-input').on('keypress', function(e) {
-            if (e.which === 13 && $(this).val().trim()) {
-                $('#send-message').click();
-            }
+            $('#chat-input').on('keypress', function(e) {
+                if (e.which === 13 && $(this).val().trim()) {
+                    $('#send-message').click();
+                }
+            });
         });
-    });
-</script>
+    </script>

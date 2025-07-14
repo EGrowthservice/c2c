@@ -1,10 +1,10 @@
 <?php
-
 namespace App\Controllers;
 
 use App\Models\Review;
 use App\Models\Product;
 use App\Helpers\Session;
+use App\WebSocket\NotificationServer;
 
 class ReviewController
 {
@@ -36,6 +36,18 @@ class ReviewController
 
             if ($this->reviewModel->create($productId, $userId, $rating, $comment)) {
                 Session::set('success', 'Đánh giá thành công!');
+                // Gửi thông báo cho người bán
+                NotificationServer::sendNotification(
+                    $product['user_id'],
+                    'review',
+                    [
+                        'product_name' => $product['title'],
+                        'rating' => $rating,
+                        'reviewer_name' => Session::get('user')['name'] ?? 'Người dùng',
+                        'timestamp' => date('Y-m-d H:i:s'),
+                        'link' => "/products/{$productId}/reviews"
+                    ]
+                );
                 header('Location: /products/' . $productId);
                 exit;
             } else {

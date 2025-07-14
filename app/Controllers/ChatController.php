@@ -1,9 +1,9 @@
 <?php
-
 namespace App\Controllers;
 
 use App\Models\ChatModel;
 use App\Helpers\Session;
+use Textalk\WebSocket\Client; // Đảm bảo dòng này có
 
 class ChatController
 {
@@ -52,6 +52,23 @@ class ChatController
 
             if ($senderId && $receiverId && $productId && $message) {
                 $result = $this->chatModel->saveChat($senderId, $receiverId, $productId, $message);
+                if ($result['success']) {
+                    $messageData = [
+                        'type' => 'message',
+                        'target_user_id' => $receiverId,
+                        'sender_name' => Session::get('user')['name'] ?? 'Người dùng',
+                        'message' => $message,
+                        'timestamp' => date('Y-m-d H:i:s'),
+                        'link' => "/chat?product_id={$productId}&seller_id={$senderId}"
+                    ];
+                    try {
+                        $client = new Client('ws://localhost:9000'); // Dòng 66
+                        $client->send(json_encode($messageData));
+                        $client->close();
+                    } catch (\Exception $e) {
+                        error_log("Lỗi gửi WebSocket: " . $e->getMessage());
+                    }
+                }
                 echo json_encode($result);
             } else {
                 echo json_encode(['success' => false, 'message' => 'Dữ liệu không hợp lệ']);

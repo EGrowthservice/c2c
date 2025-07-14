@@ -1,17 +1,19 @@
 <?php
-
 namespace App\Controllers;
 
 use App\Models\Order;
 use App\Helpers\Session;
+use App\WebSocket\NotificationServer;
 
 class OrderController
 {
     private $orderModel;
+
     public function __construct()
     {
         $this->orderModel = new Order();
     }
+
     public function track($id)
     {
         if (!Session::get('user')) {
@@ -28,6 +30,7 @@ class OrderController
         }
         require_once __DIR__ . '/../Views/order/track.php';
     }
+
     public function updateOrder($id)
     {
         if (!Session::get('user')) {
@@ -46,6 +49,17 @@ class OrderController
             $carrier = $_POST['carrier'] ?? null;
             if ($this->orderModel->updateStatus($id, $status, $trackingNumber, $carrier)) {
                 Session::set('success', 'Cập nhật đơn hàng thành công!');
+                // Gửi thông báo cho người mua
+                NotificationServer::sendNotification(
+                    $order['buyer_id'],
+                    'order',
+                    [
+                        'order_id' => $id,
+                        'status' => $status,
+                        'timestamp' => date('Y-m-d H:i:s'),
+                        'link' => "/orders/{$id}"
+                    ]
+                );
             } else {
                 Session::set('error', 'Cập nhật thất bại!');
             }
@@ -54,6 +68,7 @@ class OrderController
         }
         require_once __DIR__ . '/../Views/order/update.php';
     }
+
     public function cancel($id)
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['_token'] === Session::get('csrf_token')) {
@@ -64,6 +79,17 @@ class OrderController
                 $response = ['success' => false, 'message' => 'Chỉ có thể hủy đơn hàng ở trạng thái chờ xử lý!'];
             } elseif ($this->orderModel->updateStatus($id, 'cancelled')) {
                 $response = ['success' => true, 'message' => 'Hủy đơn hàng thành công!'];
+                // Gửi thông báo cho người bán
+                NotificationServer::sendNotification(
+                    $order['seller_id'],
+                    'order',
+                    [
+                        'order_id' => $id,
+                        'status' => 'cancelled',
+                        'timestamp' => date('Y-m-d H:i:s'),
+                        'link' => "/profile/orders/{$id}"
+                    ]
+                );
             } else {
                 $response = ['success' => false, 'message' => 'Hủy đơn hàng thất bại!'];
             }
